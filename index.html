@@ -1,320 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Coming Soon landing page" />
-  <title>Coming Soon</title>
+  <meta charset="UTF-8" />
+  <!-- viewport-fit=cover helps on iOS; safe-area is handled in CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Landing</title>
+
+  <!-- Icons (Font Awesome via cdnjs) -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" /> <!-- [3](https://cdnjs.com/libraries/font-awesome) -->
 
   <style>
     :root{
-      --bg: #0b1220;
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.72);
-      --glass: rgba(255,255,255,0.10);
-      --glass-2: rgba(255,255,255,0.14);
-      --stroke: rgba(255,255,255,0.18);
-      --shadow: 0 20px 60px rgba(0,0,0,0.45);
-      --accent: #7c5cff; /* change to your brand color */
-      --accent2: #23d5ab;
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --glass: rgba(0,0,0,.28);
+      --stroke: rgba(255,255,255,.18);
+      --shadow: 0 16px 45px rgba(0,0,0,.45);
     }
 
-    *{ box-sizing: border-box; }
-    html, body { height: 100%; }
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--text);
-      background: var(--bg);
-      overflow-x: hidden;
-    }
 
-    /* Background image layer */
-    .bg{
-      position: fixed;
-      inset: 0;
+      /* Full screen background image */
       background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(124,92,255,0.35), transparent 60%),
-        radial-gradient(900px 500px at 85% 30%, rgba(35,213,171,0.18), transparent 60%),
-        linear-gradient(180deg, rgba(11,18,32,0.25), rgba(11,18,32,0.85)),
-        url("photo.jpg") center / cover no-repeat;
-      transform: scale(1.02);
-      filter: saturate(1.05) contrast(1.05);
-      z-index: -2;
+        linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.55)),
+        url("photo.jpg") center / cover no-repeat fixed;
     }
 
-    /* Soft overlay for readability */
-    .overlay{
+    /* Keep layout simple: nothing to scroll unless you add content later */
+    .page{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+      text-align:center;
+    }
+
+    /* Optional: small subtle title (remove if you truly want ONLY links) */
+    .hint{
+      max-width: 70ch;
+      color: var(--muted);
+      font-size: clamp(14px, 2.4vw, 16px);
+      text-shadow: 0 6px 24px rgba(0,0,0,.55);
+      opacity: .0; /* set to 1 if you want text visible */
+    }
+
+    /* Bottom social bar */
+    .social-bar{
       position: fixed;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.65));
-      z-index: -1;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      /* Safe area support for iOS home indicator */
+      padding-bottom: calc(12px + env(safe-area-inset-bottom)); /* [1](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env)[2](https://willcodefor.beer/posts/safely-position-fixed-content-in-mobile-browsers/) */
+      padding-top: 12px;
+      padding-left: 12px;
+      padding-right: 12px;
+
+      display:flex;
+      justify-content:center;
+      pointer-events:none; /* only buttons receive clicks */
     }
 
-    /* Center container */
-    .wrap{
-      min-height: 100%;
-      display: grid;
-      place-items: center;
-      padding: clamp(20px, 4vw, 48px);
-    }
+    .social{
+      pointer-events:auto;
+      display:flex;
+      gap: 10px;
+      align-items:center;
 
-    .card{
-      width: min(980px, 100%);
       border: 1px solid var(--stroke);
-      background: linear-gradient(180deg, var(--glass), rgba(255,255,255,0.06));
+      background: var(--glass);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-radius: 20px;
       box-shadow: var(--shadow);
-      overflow: hidden;
-    }
 
-    .card-inner{
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 0;
-    }
-
-    /* Left section */
-    .left{
-      padding: clamp(24px, 4vw, 44px);
-    }
-
-    .badge{
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 12px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.08);
       border-radius: 999px;
-      font-size: 13px;
-      color: var(--muted);
-      letter-spacing: 0.2px;
-    }
-
-    .dot{
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--accent2);
-      box-shadow: 0 0 0 6px rgba(35,213,171,0.12);
-    }
-
-    h1{
-      margin: 16px 0 10px;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-    }
-
-    p{
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: clamp(16px, 1.55vw, 18px);
-      line-height: 1.6;
-      max-width: 58ch;
-    }
-
-    .cta{
-      margin-top: 22px;
-      display: grid;
-      gap: 12px;
-    }
-
-    /* Email form (static) */
-    .form{
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .input{
-      flex: 1 1 260px;
-      min-width: 220px;
-      border-radius: 12px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,0.08);
-      color: var(--text);
-      padding: 14px 14px;
-      outline: none;
-      font-size: 15px;
-    }
-    .input::placeholder{ color: rgba(255,255,255,0.55); }
-    .btn{
-      border: none;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-size: 15px;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--accent), #4b9dff);
-      box-shadow: 0 10px 30px rgba(124,92,255,0.25);
-      transition: transform .12s ease, filter .12s ease;
-      flex: 0 0 auto;
-    }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
-    .btn:active{ transform: translateY(0px); }
-
-    .fineprint{
-      font-size: 13px;
-      color: rgba(255,255,255,0.60);
-    }
-
-    /* Right section (details) */
-    .right{
-      padding: clamp(24px, 3.6vw, 38px);
-      border-left: 1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    }
-
-    .panel-title{
-      margin: 2px 0 14px;
-      font-size: 14px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.70);
-    }
-
-    .list{
-      display: grid;
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .item{
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 14px 14px;
-    }
-
-    .item b{
-      display: block;
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-
-    .item span{
-      color: rgba(255,255,255,0.72);
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    /* Social */
-    .social{
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+      padding: 10px 12px;
     }
 
     .social a{
-      text-decoration: none;
-      color: rgba(255,255,255,0.80);
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.06);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 14px;
-      transition: transform .12s ease, background .12s ease;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 600;
+      letter-spacing: .2px;
+
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      -webkit-tap-highlight-color: transparent;
     }
+
+    .social a i{
+      font-size: 18px;
+      width: 18px;
+      text-align:center;
+    }
+
     .social a:hover{
       transform: translateY(-1px);
-      background: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.22);
     }
 
-    footer{
-      margin-top: 18px;
-      color: rgba(255,255,255,0.55);
-      font-size: 13px;
+    .social a:active{
+      transform: translateY(0px);
     }
 
-    /* Responsive */
-    @media (max-width: 860px){
-      .card-inner{ grid-template-columns: 1fr; }
-      .right{ border-left: none; border-top: 1px solid var(--stroke); }
+    .social a:focus-visible{
+      outline: 3px solid rgba(255,255,255,.55);
+      outline-offset: 2px;
     }
 
-    /* Accessibility: reduce motion */
+    /* Mobile: keep only icons if space is tight */
+    @media (max-width: 420px){
+      .social a span{ display:none; }
+      .social a{ padding: 12px 14px; }
+      .social{ gap: 8px; }
+    }
+
+    /* Reduced motion accessibility */
     @media (prefers-reduced-motion: reduce){
-      .btn, .social a { transition: none; }
+      .social a{ transition:none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg" aria-hidden="true"></div>
-  <div class="overlay" aria-hidden="true"></div>
-
-  <main class="wrap">
-    <section class="card" role="region" aria-label="Coming soon">
-      <div class="card-inner">
-
-        <div class="left">
-          <div class="badge">
-            <span class="dot" aria-hidden="true"></span>
-            <span>We’re building something new</span>
-          </div>
-
-          <h1>Coming Soon</h1>
-
-          <p>
-            Our new experience is on the way. We’re polishing the details to deliver a fast,
-            clean, and secure site. Leave your email and we’ll notify you when it launches.
-          </p>
-
-          <div class="cta">
-            <!-- Static form (no backend). Replace action="#" with your endpoint later if needed -->
-            <form class="form" action="#" method="post" onsubmit="return false;">
-              <label class="sr-only" for="email" style="position:absolute;left:-9999px;">Email address</label>
-              <input id="email" class="input" type="email" placeholder="you@company.com" autocomplete="email" />
-              <button class="btn" type="submit">Notify me</button>
-            </form>
-
-            <div class="fineprint">
-              No spam. Just a single message when we go live.
-            </div>
-          </div>
-        </div>
-
-        <aside class="right" aria-label="Details">
-          <div class="panel-title">What to expect</div>
-
-          <ul class="list">
-            <li class="item">
-              <b>Modern design</b>
-              <span>Full-screen visuals with high readability across devices.</span>
-            </li>
-            <li class="item">
-              <b>Performance first</b>
-              <span>Optimized assets and a lightweight static build.</span>
-            </li>
-            <li class="item">
-              <b>Security mindset</b>
-              <span>Simple surface area and safe defaults.</span>
-            </li>
-          </ul>
-
-          <div class="social" aria-label="Social links">
-            <a href="#" aria-label="LinkedIn">LinkedIn</a>
-            <a href="#" aria-label="X / Twitter">X</a>
-            <a href="#" aria-label="GitHub">GitHub</a>
-          </div>
-
-          <footer>
-            © <span id="y">2026</span> Your Company • All rights reserved
-          </footer>
-        </aside>
-
-      </div>
-    </section>
+  <main class="page">
+    <div class="hint"> </div>
   </main>
 
-  <script>
-    // Tiny optional enhancement: keep year current.
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
+  <footer class="social-bar" aria-label="Social links">
+    <nav class="social" aria-label="Social media">
+      <a href="https://www.linkedin.com/in/YOURPROFILE" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+        <span>LinkedIn</span>
+      </a>
+
+      <a href="https://www.facebook.com/YOURPAGE" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        <span>Facebook</span>
+      </a>
+
+      <a href="https://www.instagram.com/YOURPROFILE" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+        <span>Instagram</span>
+      </a>
+    </nav>
+  </footer>
 </body>
 </html>
