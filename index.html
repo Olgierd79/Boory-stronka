@@ -1,12 +1,10 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Full Screen Image</title>
-
   <style>
-    /* Reset */
     html, body {
       margin: 0;
       padding: 0;
@@ -14,12 +12,11 @@
       height: 100%;
     }
 
-    /* Full screen image */
     body {
-      background: url("photo.jpg") center center / cover no-repeat;
+      background-image: url("photo.jpg");
+      background-size: cover;        /* fills the screen */
+      background-position: center;   /* centers the image */
+      background-repeat: no-repeat;
     }
   </style>
-</head>
-<body>
-</body>
-</html>
+</head
